@@ -5,7 +5,6 @@ ExtHardDisk::ExtHardDisk()
 {
 	
 }
-
 int ExtHardDisk:: Disk_Init()
 {
 	return 0;

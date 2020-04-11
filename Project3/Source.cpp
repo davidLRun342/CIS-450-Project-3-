@@ -19,11 +19,13 @@ int main()
 	string b =directory.directory_entries[0].filename = "David.txt";
 	int c = directory.directory_entries[0].inode_num = 1244;
 	
+	
 	cout << "Directory name:" << a << endl;
 	cout << "Directory entry 0 name:" << b << endl;
 	cout << "Directory inode number:" << c << endl;
 	
 	
 	system("PAUSE");
+
 	return 0;
 }
