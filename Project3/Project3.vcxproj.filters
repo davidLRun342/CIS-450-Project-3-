@@ -24,27 +24,18 @@
     <ClCompile Include="WrkHardDisk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="File.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Directory.cpp">
+    <ClCompile Include="InodeBlock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ExtnalHardDisk.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ExtHardDisk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WrkHardDisk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="File.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Directory.h">
+    <ClInclude Include="InodeBlock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

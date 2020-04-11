@@ -115,17 +115,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Directory.cpp" />
     <ClCompile Include="ExtHardDisk.cpp" />
-    <ClCompile Include="File.cpp" />
+    <ClCompile Include="InodeBlock.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="WrkHardDisk.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Directory.h" />
     <ClInclude Include="ExtHardDisk.h" />
-    <ClInclude Include="ExtnalHardDisk.h" />
-    <ClInclude Include="File.h" />
+    <ClInclude Include="InodeBlock.h" />
     <ClInclude Include="WrkHardDisk.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
