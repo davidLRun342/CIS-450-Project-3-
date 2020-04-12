@@ -3,7 +3,7 @@
 
 InodeBlock::InodeBlock()
 {
-
+	
 }
 
 InodeDirectory::InodeDirectory()

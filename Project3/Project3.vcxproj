@@ -116,12 +116,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ExtHardDisk.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="InodeBlock.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="WrkHardDisk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ExtHardDisk.h" />
+    <ClInclude Include="FileSystem.h" />
     <ClInclude Include="InodeBlock.h" />
     <ClInclude Include="WrkHardDisk.h" />
   </ItemGroup>
