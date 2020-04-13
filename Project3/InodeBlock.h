@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include <iostream>
+
+using namespace std;
 
 /* Essentially a FILE and DIRECTORY is composed of Inode blocks and data blocks 
    so it's not neccessary to create FILE and DIRECTORY Class*/
@@ -14,6 +17,7 @@ struct DirEntries
 }; typedef struct DirEntries DirEntries;
 
 
+
 /*=============FILE/DIRECT DATA STRUCTURE - Composed of Inode blocks and Data blocks*/
 class InodeBlock
 {
@@ -23,15 +27,14 @@ public:
 	string file_type;
 	int data_blocks[10];
 
+
 	InodeBlock();
 
-	int Dir_Create(string path);
-	int Dir_Size(string path);
-	int Dir_Read(string path, string buffer, int size);
-	int Dir_Unlink(string path);
+
+	void printInodeInfo();
+
 
 };
-
 
 class InodeDirectory : public InodeBlock
 {
@@ -39,7 +42,8 @@ public:
 
 	string direct_name;
 	int inode_num;
+	int entrySize = 0;
 	DirEntries directory_entries[10];
 
-	InodeDirectory();
+	void printInodeDir();
 };
