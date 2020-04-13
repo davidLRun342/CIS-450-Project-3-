@@ -26,12 +26,9 @@ public:
 	int file_sz;
 	string file_type;
 	int data_blocks[10];
-
+	int da_block_cnt = 0;
 
 	InodeBlock();
-
-
-	void printInodeInfo();
 
 
 };
@@ -45,5 +42,5 @@ public:
 	int entrySize = 0;
 	DirEntries directory_entries[10];
 
-	void printInodeDir();
+	void printInodeInfo();
 };

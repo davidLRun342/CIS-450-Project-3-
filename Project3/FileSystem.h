@@ -10,6 +10,8 @@ class FileSystem
 {
 public: 
 	string osErrMsg; 
+	bool hasBooted = false;
+
 
 	string FileSys = "UMDLibFS";
 

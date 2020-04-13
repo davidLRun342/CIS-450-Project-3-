@@ -19,6 +19,7 @@ public:
 	int totalInode = 0;
 	Sector diskSectors[SECTOR_SZ];
 	
+	bool data_bitmap[SECTOR_SZ];
 	
 	WrkHardDisk();
 
@@ -30,11 +31,9 @@ public:
 	int File_Close(int fd);
 	int File_Unlink(string file);
 
-	int Dir_Create(string path);
-	int Dir_Size(string path);
-	int Dir_Read(string path, string buffer, int size);
-	int Dir_Unlink(string path);
-
+	void printInodeBitmap();
+	void printHardDiskContent();
+	void printDataBitMap();
 
 };
 

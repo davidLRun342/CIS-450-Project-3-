@@ -11,6 +11,7 @@ ExtHardDisk::ExtHardDisk()
 	for (int i = 0; i < SECTOR_SZ; i++)
 	{
 		diskSectors[i].address = i;
+		data_bitmap[i] = 0;
 	}
 }
 int ExtHardDisk:: Disk_Init()
@@ -20,11 +21,21 @@ int ExtHardDisk:: Disk_Init()
 	sector_unit = SECTOR_UNIT;
 	init = true;
 
+	cout << "\nEXTERNAL HARD DISK HAS BEEN INITIALIZED! " << endl;
+	//Initialize the root directory 
 	rootDir.file_sz = 0;
 	rootDir.inode_num = 0;
 	rootDir.file_type = "dir";
 	rootDir.direct_name = "/root";
 
+	diskSectors[0].state = 1;
+	diskSectors[1].state = 1;
+	diskSectors[2].state = 1;
+
+	data_bitmap[0] = 1;
+	data_bitmap[1] = 1;
+	data_bitmap[2] = 1;
+	
 	return 0;
 }
 int ExtHardDisk::Disk_Load()
@@ -68,6 +79,7 @@ int ExtHardDisk::Dir_Create(string path)
 
 				inode_bitmap[totalInode].address = diskSectors[i].address;
 				diskSectors[i].directory = inode_bitmap[totalInode].inode; // stores into sector
+				data_bitmap[diskSectors[i].address] = 1;
 				totalInode++;
 
 				flag = 1;
@@ -104,8 +116,12 @@ int ExtHardDisk::Dir_Unlink(string path)
 
 void ExtHardDisk::printInodeBitmap()
 {
-	cout << "INODE BITMAP ENTRY: " << endl << endl;
+	cout << "EXTERNAL HARD DISK INODE BITMAP ENTRY: " << endl << endl;
 
+	if (totalInode == 0)
+	{
+		cout << "NONE CURRENTLY" << endl << endl;
+	}
 	for (int i = 0; i < totalInode; i++)
 	{
 		cout << "Inode number: " << inode_bitmap[i].inode.inode_num << endl;
@@ -116,11 +132,20 @@ void ExtHardDisk::printInodeBitmap()
 
 void ExtHardDisk::printHardDiskContent()
 {
-	cout << "DISK CONTENT:" << endl << endl;
+	cout << "EXTERNAL HARD DISK CONTENT:" << endl << endl;
 	cout << "Address " << "state" << "    File name  " << endl;
 	for (int i = 0; i < SECTOR_SZ; i++)
 	{
 		cout << diskSectors[i].address << "         " << diskSectors[i].state << "         "<< diskSectors[i].directory.direct_name << endl;
 	}
 
+}
+void ExtHardDisk::printDataBitMap()
+{
+	cout << "EXTERNAL HARD DISK DATA BITMAP ENTRY: " << endl << endl;
+
+	for (int i = 0; i < SECTOR_SZ; i++)
+	{
+		cout << "\t" << i << " : " << data_bitmap[i] << endl; 
+	}  
 }

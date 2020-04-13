@@ -23,7 +23,6 @@ struct Sector
 	int address;
 	bool state = 0;
 	InodeDirectory directory; 
-	bool data_bitmap[SECTOR_SZ];
 
 }; typedef struct Sector Sector;
 
@@ -36,12 +35,15 @@ public:
 	int sector_unit; 
 	int magicnum;
 	int inode_num_a = 1;
+
 	bool init = false;
 	InodeDirectory rootDir;
 
 	Sector diskSectors[SECTOR_SZ];
 	
 	inodeBitmap inode_bitmap[SECTOR_SZ];
+	bool data_bitmap[SECTOR_SZ];
+
 	int totalInode = 0;
 
 	ExtHardDisk();
@@ -58,6 +60,8 @@ public:
 	int Dir_Unlink(string path);
 
 	void printInodeBitmap();
+	void printDataBitMap();
 	void printHardDiskContent();
+
 };
 

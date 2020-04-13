@@ -13,33 +13,48 @@ InodeBlock::InodeBlock()
 }
  
 
-void InodeBlock::printInodeInfo()
+void  InodeDirectory :: printInodeInfo()
 {
-	cout << "File Type: " << file_type << endl;
-	cout << "File Size: " << file_sz << endl;
-	cout << "Data Blocks: " << endl;
-
-	for (int i = 0; i < 10; i++)
+	if (file_type == "dir")
 	{
-		cout <<"\t" <<data_blocks << endl;
+		cout << "==========================================================" << endl;
+		cout << "Directory name: " << direct_name << endl;
+		cout << "Inode number: " << inode_num << endl;
+		cout << "File Type: " << file_type << endl;
+		cout << "File Size: " << file_sz << endl;
+
+		cout << "Directory Entries for " << direct_name << " :" << endl << endl;
+		
+		if (entrySize == 0)
+		{
+			cout << "NONE CURRENTLY" << endl << endl;
+		}
+
+		for (int i = 0; i < entrySize; i++)
+		{
+			cout << "Entry " << i << " :" << "\n\tFile Name: " << directory_entries[i].filename << endl;
+			cout << "\tFile Inode Number: " << directory_entries[i].inode_num << endl;
+
+		}
 	}
-	
-}
-void  InodeDirectory :: printInodeDir()
-{
-	cout << "==========================================================" << endl;
-	cout << "Directory name: " << direct_name << endl;
-	cout << "Inode number: " << inode_num << endl;
-	cout << "File Type: " << file_type << endl;
-	cout << "File Size: " << file_sz << endl << endl;
-	
-	cout << "Directory Entries for " << direct_name <<" :" << endl << endl;
-
-	for (int i = 0; i < entrySize; i++)
+	else if (file_type == "file")
 	{
-		cout << "Entry " << i << " :" << "\n\tFile Name: " << directory_entries[i].filename << endl;
-		cout << "\tFile Inode Number: " << directory_entries[i].inode_num << endl;
+		cout << "==========================================================" << endl;
+		cout << "File name: " << direct_name << endl;
+		cout << "File Type: " << file_type << endl;
+		cout << "File Size: " << file_sz << endl;
 
+		cout << "Data Blocks for " << direct_name << " :" << endl << endl;
+		
+		if (da_block_cnt == 0)
+		{
+			cout << "NONE CURRENTLY" << endl << endl;
+		}
+		
+		for (int i = 0; i < da_block_cnt; i++)
+		{
+			cout << "\t" << data_blocks[i] << endl;
+		}
 	}
 	
 }
