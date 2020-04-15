@@ -12,7 +12,6 @@ public:
 	string osErrMsg; 
 	bool hasBooted = false;
 
-
 	string FileSys = "UMDLibFS";
 
 	ExtHardDisk *extHardDisk; 
@@ -22,4 +21,10 @@ public:
 	int FS_Sync();
 	int FS_Reset();
 	
+	int Disk_Load();
+	int Disk_Save();
+	int Disk_Write(int sector, string buffer);
+	int Disk_Read(int sector, string buffer);
+	int Dir_Read(string path, Buffer buffer, int size);
+
 };

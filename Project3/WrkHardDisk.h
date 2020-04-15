@@ -3,8 +3,17 @@
 #include<iostream>
 #include "ExtHardDisk.h"
 
+#define SECTOR_SZ 1000
+#define  SECTOR_UNIT 512
 
 using namespace std;
+
+struct Buffer
+{
+	InodeDirectory inodeblock;
+	int size=0;
+
+}; typedef struct Buffer Buffer;
 
 class WrkHardDisk
 {
@@ -13,6 +22,8 @@ public:
 	int sector_sz;
 	int sector_unit;
 	
+	int filePointer=0;
+
 	InodeDirectory rootDir;
 
 	inodeBitmap inode_bitmap[SECTOR_SZ];
@@ -21,6 +32,10 @@ public:
 	
 	bool data_bitmap[SECTOR_SZ];
 	
+	Buffer buffer;
+
+	ExtHardDisk *extHardDisk;
+
 	WrkHardDisk();
 
 	int File_Create(string file);
@@ -34,6 +49,8 @@ public:
 	void printInodeBitmap();
 	void printHardDiskContent();
 	void printDataBitMap();
+	void printAllInode();
+	void printBufferContent();
 
 };
 

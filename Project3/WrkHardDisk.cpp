@@ -46,7 +46,7 @@ int WrkHardDisk::File_Unlink(string file)
 
 void WrkHardDisk::printInodeBitmap()
 {
-	cout << "WORKING HARD DISK INODE BITMAP ENTRY: " << endl << endl;
+	cout << "\nWORKING HARD DISK INODE BITMAP ENTRY: " << endl << endl;
 
 	if (totalInode == 0)
 	{
@@ -77,4 +77,18 @@ void WrkHardDisk::printHardDiskContent()
 	{
 		cout << "\t" << i << " : " << data_bitmap[i] << endl;
 	}
+}
+void WrkHardDisk::printAllInode()
+{
+	cout << "WORKING HARD DISK ALL DIRECTORY LIST: " << endl << endl;
+	for (int i = 0; i < totalInode; i++)
+	{
+		inode_bitmap[i].inode.printInodeInfo();
+	}
+}
+void WrkHardDisk::printBufferContent()
+{
+	cout << "\nCONTENTS OF BUFFER IN WORKING HARD DISK: " << endl << endl;
+	buffer.inodeblock.printInodeInfo();
+	cout << "\nSIZE IN BUFFER: " << buffer.size << endl;
 }

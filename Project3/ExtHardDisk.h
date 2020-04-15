@@ -46,22 +46,21 @@ public:
 
 	int totalInode = 0;
 
+	
+
 	ExtHardDisk();
 
 	int Disk_Init();
-	int Disk_Load();
-	int Disk_Save();
-	int Disk_Write(int sector, string buffer);
-	int Disk_Read(int sector, string buffer);
 	
-	int Dir_Create(string path);
+	int Dir_Create(string path, string parent);
 	int Dir_Size(string path);
-	int Dir_Read(string path, string buffer, int size);
 	int Dir_Unlink(string path);
 
+	void diskAlloc();
 	void printInodeBitmap();
 	void printDataBitMap();
 	void printHardDiskContent();
+	void printAllInode();
 
 };
 
