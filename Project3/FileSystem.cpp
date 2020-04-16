@@ -94,15 +94,46 @@ int FileSystem::Disk_Save()
 
 	return -1;
 }
-int FileSystem::Disk_Write(int sector, string buffer)
+int FileSystem::Disk_Write(int sector)
 {
 	return 0;
 }
-int FileSystem::Disk_Read(int sector, string buffer)
+int FileSystem::Disk_Read(int sector )
 {
-	return 0;
+	int i = 0;
+	int temp = 0;
+	bool sectFound = false;
+
+	if (extHardDisk->init == true)
+	{
+		if (sector > 0 && sector < SECTOR_SZ)
+			while (sectFound == false)
+			{
+				if (extHardDisk->diskSectors[i].address == sector)
+				{
+					temp = wrkHardDisk->buffer.size + extHardDisk->diskSectors[i].inode.file_sz;
+
+					if (temp < 512)
+					{
+						wrkHardDisk->buffer.inodeblock = extHardDisk->diskSectors[i].inode; // store the disk sector info into buffer
+						wrkHardDisk->buffer.size = wrkHardDisk->buffer.size + extHardDisk->diskSectors[i].inode.file_sz;
+						sectFound = true;
+						return 0;
+					}
+
+					cout << "BUFFER CANNOT CONTAIN ANY MORE DATA! " << endl << endl;
+					return -1;
+				}
+				i++;
+			}
+	}
+	extHardDisk->dskErrMsg = "E_READ_INVALID_PARAM";
+	cout << "\n" << extHardDisk->dskErrMsg << endl << endl;
+	cout << "EXTERNAL HARD DISK FAILED TO READ " << endl << endl;
+
+	return -1;
 }
-int FileSystem::Dir_Read(string path, Buffer buffer, int size)
+int FileSystem::Dir_Read(string path, int size)
 {
 	bool found = false;
 	int i = 0;
@@ -117,7 +148,6 @@ int FileSystem::Dir_Read(string path, Buffer buffer, int size)
 			{
 				wrkHardDisk->buffer.inodeblock = extHardDisk->inode_bitmap[i].inode; // stores into the buffer
 				wrkHardDisk->buffer.size = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
-				wrkHardDisk->printBufferContent();
 				found = true;
 				return 0; 
 			}
@@ -125,8 +155,7 @@ int FileSystem::Dir_Read(string path, Buffer buffer, int size)
 			cout << "\n" << osErrMsg << endl << endl;
 			cout << "BUFFER CANNOT STOR THAT LOAD OF DATA!!" << endl;
 
-			return -1;
-			
+			return -1;	
 		}
 		i++;
 	}

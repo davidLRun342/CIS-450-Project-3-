@@ -66,7 +66,7 @@ void WrkHardDisk::printHardDiskContent()
 	cout << "Address " << "state" << "    File name  " << endl;
 	for (int i = 0; i < SECTOR_SZ; i++)
 	{
-		cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << diskSectors[i].directory.direct_name << endl;
+		cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << diskSectors[i].inode.direct_name << endl;
 	}
 
 }void WrkHardDisk::printDataBitMap()

@@ -22,7 +22,7 @@ struct Sector
 {
 	int address;
 	bool state = 0;
-	InodeDirectory directory; 
+	InodeDirectory inode; 
 
 }; typedef struct Sector Sector;
 
@@ -36,6 +36,8 @@ public:
 	int magicnum;
 	int inode_num_a = 1;
 
+	string dskErrMsg = "";
+
 	bool init = false;
 	InodeDirectory rootDir;
 
@@ -46,7 +48,6 @@ public:
 
 	int totalInode = 0;
 
-	
 
 	ExtHardDisk();
 

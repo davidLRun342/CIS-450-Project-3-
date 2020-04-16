@@ -5,7 +5,7 @@
 
 #define SECTOR_SZ 1000
 #define  SECTOR_UNIT 512
-
+#define BUFF_NUM 5
 using namespace std;
 
 struct Buffer
@@ -33,6 +33,7 @@ public:
 	bool data_bitmap[SECTOR_SZ];
 	
 	Buffer buffer;
+	int buff_cnt = 0;
 
 	ExtHardDisk *extHardDisk;
 

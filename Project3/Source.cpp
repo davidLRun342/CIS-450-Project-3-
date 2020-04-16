@@ -37,14 +37,21 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 	int s10 = UMDLibFS->extHardDisk->Dir_Create("r", "/root/Mechanic/Schedule");
 
 	int rec4 = UMDLibFS->FS_BOOT();
-	
-	UMDLibFS->Dir_Read("/root/Mechanic/Schedule", UMDLibFS->wrkHardDisk->buffer, 412);
-	UMDLibFS->Dir_Read("/root/Mechanic/Schedule", UMDLibFS->wrkHardDisk->buffer, 412);
-	UMDLibFS->Dir_Read("/root/Mechanic/Schedule", UMDLibFS->wrkHardDisk->buffer, 412);
-	UMDLibFS->Dir_Read("/root/Mechanic/Schedule", UMDLibFS->wrkHardDisk->buffer, 412);
+	/*
+	UMDLibFS->Dir_Read("/root/Mechanic/Schedule",412);
+	UMDLibFS->Dir_Read("/root/Mechanic/Schedule", 412);
+	UMDLibFS->Dir_Read("/root/Mechanic/Schedule", 412);
+	UMDLibFS->Dir_Read("/root/Mechanic/Schedule", 412);
+	*/
 
+	//UMDLibFS->Disk_Read(8);
+	UMDLibFS->Disk_Read(0);
+	
+
+	UMDLibFS->wrkHardDisk->printBufferContent();
+
+	//UMDLibFS->extHardDisk->printHardDiskContent();
 	//UMDLibFS->extHardDisk->printAllInode();
-	//UMDLibFS->extHardDisk->printInodeBitmap();
 
 	//UMDLibFS->wrkHardDisk->printAllInode();
 	//UMDLibFS->wrkHardDisk->printInodeBitmap();

@@ -16,7 +16,12 @@ struct DirEntries
 
 }; typedef struct DirEntries DirEntries;
 
+struct DataBlock
+{
+	int address;
+	int sizeHold =0;
 
+}; typedef struct DataBlock DataBlock;
 
 /*=============FILE/DIRECT DATA STRUCTURE - Composed of Inode blocks and Data blocks*/
 class InodeBlock
@@ -25,7 +30,7 @@ public:
 
 	int file_sz;
 	string file_type;
-	int data_blocks[10];
+	DataBlock data_blocks[10];
 	int da_block_cnt = 0;
 
 	InodeBlock();

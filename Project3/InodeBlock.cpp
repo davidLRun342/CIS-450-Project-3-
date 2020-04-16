@@ -8,7 +8,7 @@ InodeBlock::InodeBlock()
 	
 	for (int i = 0; i < 10; i++)
 	{
-		data_blocks[i] = 0;
+		data_blocks[i].sizeHold = 0;
 	}
 }
  
@@ -53,7 +53,8 @@ void  InodeDirectory :: printInodeInfo()
 		
 		for (int i = 0; i < da_block_cnt; i++)
 		{
-			cout << "\t" << data_blocks[i] << endl;
+			cout << "\taddress: " << data_blocks[i].sizeHold << endl; 
+			cout << "\tsize" << data_blocks[i].sizeHold << endl;
 		}
 	}
 	

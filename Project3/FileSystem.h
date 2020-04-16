@@ -9,6 +9,7 @@ using namespace std;
 class FileSystem
 {
 public: 
+
 	string osErrMsg; 
 	bool hasBooted = false;
 
@@ -23,8 +24,8 @@ public:
 	
 	int Disk_Load();
 	int Disk_Save();
-	int Disk_Write(int sector, string buffer);
-	int Disk_Read(int sector, string buffer);
-	int Dir_Read(string path, Buffer buffer, int size);
+	int Disk_Write(int sector);
+	int Disk_Read(int sector);
+	int Dir_Read(string path, int size);
 
 };

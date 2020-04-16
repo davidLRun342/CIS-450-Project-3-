@@ -33,6 +33,7 @@ int ExtHardDisk:: Disk_Init()
 	totalInode++;
 
 	diskSectors[0].state = 1;
+	diskSectors[0].inode = rootDir;
 	diskSectors[1].state = 1;
 	diskSectors[2].state = 1;
 
@@ -47,6 +48,7 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 {
 	int cnt = 1;
 	bool found = false;
+	int temp = 0;
 	if (init == true)
 	{
 		if (path.length() < 16)
@@ -60,6 +62,7 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 					inode_bitmap[cnt].inode.directory_entries[inode_bitmap[cnt].inode.entrySize].filename = inode_bitmap[totalInode].inode.direct_name;
 					inode_bitmap[cnt].inode.directory_entries[inode_bitmap[cnt].inode.entrySize].inode_num = inode_num_a;
 					inode_bitmap[cnt].inode.entrySize++;
+
 					inode_bitmap[cnt].inode.file_sz = inode_bitmap[cnt].inode.file_sz + 20;
 
 					inode_bitmap[totalInode].inode.file_type = "dir";
@@ -67,8 +70,10 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 					inode_bitmap[totalInode].inode.inode_num = inode_num_a;
 
 					inode_num_a++;
-
+		
 					diskAlloc();
+					diskSectors[inode_bitmap[cnt].address].inode = inode_bitmap[cnt].inode;
+
 					found = true;
 					return 0;
 				}
@@ -88,12 +93,18 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 				rootDir.directory_entries[rootDir.entrySize].inode_num = inode_bitmap[totalInode].inode.inode_num; // assign random inode number
 				rootDir.entrySize++;
 				rootDir.file_sz = rootDir.file_sz + 20; // add 20 byte onto the size of the directory
+				
 				inode_bitmap[0].inode = rootDir;
-
+				
 				// LOOKS FOR FREE SECTOR SPACE IN HARD DISK AND UPDATES INODE BITMAP
 				diskAlloc();
+
+				diskSectors[0].inode = rootDir;
+
 				return 0;
 			}
+
+			
 		}
 		cout << "\nDirectory name must be less than 16 bytes or 16 characters long" << endl << endl;
 	}
@@ -154,10 +165,9 @@ void ExtHardDisk::diskAlloc()
 			diskSectors[i].state = 1;
 
 			inode_bitmap[totalInode].address = diskSectors[i].address;
-			diskSectors[i].directory = inode_bitmap[totalInode].inode; // stores into sector
+			diskSectors[i].inode = inode_bitmap[totalInode].inode; // stores into sector
 			data_bitmap[diskSectors[i].address] = 1;
 			totalInode++;
-
 			flag = 1;
 		}
 		i++;
@@ -166,10 +176,19 @@ void ExtHardDisk::diskAlloc()
 void ExtHardDisk::printHardDiskContent()
 {
 	cout << "EXTERNAL HARD DISK CONTENT:" << endl << endl;
-	cout << "Address " << "state" << "    File name  " << endl;
+	cout << "Address " << "state" << "    File name  " << "                                      File Size"<< endl;
 	for (int i = 0; i < SECTOR_SZ; i++)
 	{
-		cout << diskSectors[i].address << "         " << diskSectors[i].state << "         "<< diskSectors[i].directory.direct_name << endl;
+		if (i == 1)
+		{
+			cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << "INODE BITMAP TABLE" << "                                      " <<diskSectors[i].inode.file_sz <<endl;
+		}
+		else if (i == 2)
+		{
+			cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << "DATA BITMAP TABLE" << "                                      " << diskSectors[i].inode.file_sz << endl;
+		}
+
+		cout << diskSectors[i].address << "         " << diskSectors[i].state << "         "<< diskSectors[i].inode.direct_name << "                                      " << diskSectors[i].inode.file_sz << endl;
 	}
 
 }
