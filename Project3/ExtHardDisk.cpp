@@ -19,34 +19,29 @@ int ExtHardDisk:: Disk_Init()
 	magicnum = 4;
 	sector_sz = SECTOR_SZ;
 	sector_unit = SECTOR_UNIT;
-	if (init == false) {
-		init = true;
-		cout << "\nEXTERNAL HARD DISK IS INITIALIZED! " << endl;
-		//Initialize the root directory 
-		rootDir.file_sz = 0;
-		rootDir.inode_num = 0;
-		rootDir.file_type = "dir";
-		rootDir.direct_name = "/root";
+	init = true;
 
-		inode_bitmap[0].inode = rootDir;
-		inode_bitmap[0].address = 0;
-		totalInode++;
+	cout << "\nEXTERNAL HARD DISK IS INITIALIZED! " << endl;
+	//Initialize the root directory 
+	rootDir.file_sz = 0;
+	rootDir.inode_num = 0;
+	rootDir.file_type = "dir";
+	rootDir.direct_name = "/root";
 
-		diskSectors[0].state = 1;
-		diskSectors[0].inode = rootDir;
-		diskSectors[1].state = 1;
-		diskSectors[2].state = 1;
+	inode_bitmap[0].inode = rootDir;
+	inode_bitmap[0].address = 0;
+	totalInode++;
 
-		data_bitmap[0] = 1;
-		data_bitmap[1] = 1;
-		data_bitmap[2] = 1;
+	diskSectors[0].state = 1;
+	diskSectors[0].inode = rootDir;
+	diskSectors[1].state = 1;
+	diskSectors[2].state = 1;
 
-		return 0;
-	}
-	else {
-		cout << "\nERROR!! EXRTERNAL HARD DISK HAS BEED INITIALIZED ALREADY!!" << endl;
-		return -1;
-	}
+	data_bitmap[0] = 1;
+	data_bitmap[1] = 1;
+	data_bitmap[2] = 1;
+	
+	return 0;
 }
 
 int ExtHardDisk::Dir_Create(string path, string directory)

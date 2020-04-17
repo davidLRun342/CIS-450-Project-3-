@@ -3,42 +3,30 @@
 #include"FileSystem.h"
 
 
-int FileSystem::FS_BOOT()
+int FileSystem:: FS_BOOT()
 {
+	hasBooted = true;
 
 	if (extHardDisk->init == false)
 	{
 		osErrMsg = "ERR_FILE_BOOT";
-		cout << "\n\n" << osErrMsg << " - MUST INITIALIZE THE EXTERNAL HARD DISK! " << endl << endl;
-		cout << "External Hard Disk will now be initialized for you....." << endl << endl;
-
+		cout <<"\n\n" << osErrMsg <<" - MUST INITIALIZE THE EXTERNAL HARD DISK! " << endl <<endl;
+		cout << "External Hard Disk will now be initialized for you....." << endl<<endl;
+		
 		extHardDisk->Disk_Init();
 
 		return -1;
 	}
-	if (hasBooted == false && hasReseted == false) {
-		hasBooted = true;
-		cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS SUCESSEFULLy BOOTED!!" << endl;
 
-		Disk_Load();
-		return 0;
-	}
-	if (hasBooted == true && hasReseted == false) {
-		osErrMsg = "ERR_FILE_BOOT";
-		cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS ALREADY BEEN BOOTED!!" << endl;
-		return -1;
-	}
-	if (hasBooted == true && hasReseted == true) {
-		hasReseted = false;
-		cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS BEEN REBOOTED!!" << endl;
-		return 0;
-	}
-
+	cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS SUCESSEFULLy BOOTED!!" << endl;
+	
+	Disk_Load();
+	return 0;
 }
 
-int FileSystem::FS_Sync()
+int FileSystem :: FS_Sync()
 {
-	if (hasBooted == true && hasReseted == false)
+	if (hasBooted == true)
 	{
 		cout << "\nSYNCING MEMORY TO EXTERNAL HARD DISK.....PLEASE WAIT A MOMENT!" << endl << endl;
 
@@ -54,28 +42,18 @@ int FileSystem::FS_Sync()
 
 		return 0;
 	}
-	else {
-		cout << "\n\nSYSTEM MUST BE BOOTED IN ORDER TO SYNC !!! PLEASE BOOT FS!" << endl << endl;
-		osErrMsg = "ERR_FILE_SYNC";
-		return -1;
-	}
-
+	
+	cout << "\n\nSYSTEM MUST BE BOOTED IN ORDER TO SYNC !!! PLEASE BOOT FS!" << endl <<endl; 
+	return -1;
 }
 
-int FileSystem::FS_Reset()
+int FileSystem:: FS_Reset()
 {
-	if (hasBooted == true && hasReseted == false)
+	if (hasBooted == true)
 	{
-		hasReseted = true;
 		FS_Sync();
-
-		return 0;
-	}
-	if (hasBooted == true && hasReseted == true) {
-
-		osErrMsg = "ERR_FILE_RESET";
-		cout << "file system is already locked" << endl;
-		return -1;
+		hasBooted = false;
+		
 	}
 	if (hasBooted == false || extHardDisk->init == false)
 	{
@@ -83,10 +61,12 @@ int FileSystem::FS_Reset()
 		cout << osErrMsg << endl << endl;
 		cout << "SYSTEM SHUTDOWN...." << endl;
 		cout << "\nFILE SYSTEM CURRENTLY UNAVAILABLE......" << endl;
-
+		
 		return -1;
 	}
+	return 0; 
 }
+
 
 int FileSystem::Disk_Load()
 {
