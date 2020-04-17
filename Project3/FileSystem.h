@@ -12,7 +12,7 @@ public:
 
 	string osErrMsg; 
 	bool hasBooted = false;
-
+	bool hasReseted = false;
 	string FileSys = "UMDLibFS";
 
 	ExtHardDisk *extHardDisk; 
