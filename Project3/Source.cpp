@@ -62,7 +62,7 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 	UMDLibFS->wrkHardDisk->File_Open("/root/Mechanic/Cannder.xmls");
 	UMDLibFS->wrkHardDisk->File_Open("/root/Engineer/oil.jpg");
 
-	UMDLibFS->wrkHardDisk->printOpenFileTable();
+	//UMDLibFS->wrkHardDisk->printOpenFileTable();
 
 	UMDLibFS->wrkHardDisk->File_Read(6);
 	UMDLibFS->wrkHardDisk->printBufferContent();
@@ -72,10 +72,11 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 
 	//UMDLibFS->wrkHardDisk->printOpenFileTable();
 
-	//UMDLibFS->wrkHardDisk->printHardDiskContent();
+	UMDLibFS->wrkHardDisk->printHardDiskContent();
+
 	//UMDLibFS->extHardDisk->rootDir.printInodeInfo();
 
-  // UMDLibFS->extHardDisk->printAllInode();
+    //UMDLibFS->extHardDisk->printAllInode();
 
 	//UMDLibFS->wrkHardDisk->printInodeBitmap();
 
