@@ -21,6 +21,7 @@ struct inodeBitmap
 struct Sector
 {
 	int address;
+	int size = 0;
 	bool state = 0;
 	InodeDirectory inode; 
 
@@ -48,15 +49,13 @@ public:
 
 	int totalInode = 0;
 
-
 	ExtHardDisk();
 
 	int Disk_Init();
 	
 	int Dir_Create(string path, string parent);
 	int Dir_Size(string path);
-	int Dir_Unlink(string path);
-
+	
 	void diskAlloc();
 	void printInodeBitmap();
 	void printDataBitMap();

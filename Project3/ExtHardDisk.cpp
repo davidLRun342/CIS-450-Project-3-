@@ -64,6 +64,7 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 					inode_bitmap[cnt].inode.entrySize++;
 
 					inode_bitmap[cnt].inode.file_sz = inode_bitmap[cnt].inode.file_sz + 20;
+				
 
 					inode_bitmap[totalInode].inode.file_type = "dir";
 					inode_bitmap[totalInode].inode.file_sz = 0;
@@ -73,7 +74,7 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 		
 					diskAlloc();
 					diskSectors[inode_bitmap[cnt].address].inode = inode_bitmap[cnt].inode;
-
+					diskSectors[inode_bitmap[cnt].address].size = inode_bitmap[cnt].inode.file_sz;
 					found = true;
 					return 0;
 				}
@@ -100,6 +101,7 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 				diskAlloc();
 
 				diskSectors[0].inode = rootDir;
+				diskSectors[0].size = rootDir.file_sz;
 
 				return 0;
 			}
@@ -127,13 +129,6 @@ int ExtHardDisk::Dir_Size(string path)
 	}
 	return -1;
 
-}
-
-
-int ExtHardDisk::Dir_Unlink(string path)
-{
-
-	return 0;
 }
 
 void ExtHardDisk::printInodeBitmap()
@@ -176,19 +171,19 @@ void ExtHardDisk::diskAlloc()
 void ExtHardDisk::printHardDiskContent()
 {
 	cout << "EXTERNAL HARD DISK CONTENT:" << endl << endl;
-	cout << "Address " << "state" << "    File name  " << "                                      File Size"<< endl;
+	cout << "Address " << "state" << "    File name  " << endl << endl;
 	for (int i = 0; i < SECTOR_SZ; i++)
 	{
 		if (i == 1)
 		{
-			cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << "INODE BITMAP TABLE" << "                                      " <<diskSectors[i].inode.file_sz <<endl;
+			cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << "INODE BITMAP TABLE" << "                                          File size: " <<diskSectors[i].inode.file_sz <<endl;
 		}
 		else if (i == 2)
 		{
-			cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << "DATA BITMAP TABLE" << "                                      " << diskSectors[i].inode.file_sz << endl;
+			cout << diskSectors[i].address << "         " << diskSectors[i].state << "         " << "DATA BITMAP TABLE" << "                                             File size: " << diskSectors[i].inode.file_sz << endl;
 		}
 
-		cout << diskSectors[i].address << "         " << diskSectors[i].state << "         "<< diskSectors[i].inode.direct_name << "                                      " << diskSectors[i].inode.file_sz << endl;
+		cout << diskSectors[i].address << "         " << diskSectors[i].state << "         "<< diskSectors[i].inode.direct_name << "                                     File Size: " << diskSectors[i].inode.file_sz << endl;
 	}
 
 }

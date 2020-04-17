@@ -29,7 +29,7 @@ class InodeBlock
 public:
 
 	int file_sz;
-	string file_type;
+	string file_type ="na";
 	DataBlock data_blocks[10];
 	int da_block_cnt = 0;
 

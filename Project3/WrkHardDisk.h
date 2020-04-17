@@ -15,6 +15,21 @@ struct Buffer
 
 }; typedef struct Buffer Buffer;
 
+struct otableEntry
+{
+	InodeDirectory inodeblock;
+	int address = -1;
+	int fDes = -1;
+	int state = 0;
+
+}; typedef struct otableEntry otableEntry;
+
+struct openFileTable
+{
+	otableEntry entries[10];
+
+}; typedef struct openFileTable openFileTable;
+
 class WrkHardDisk
 {
 public:
@@ -23,6 +38,9 @@ public:
 	int sector_unit;
 	
 	int filePointer=0;
+	int fileDescr = 0;
+
+	string osErrMsg = "";
 
 	InodeDirectory rootDir;
 
@@ -36,22 +54,26 @@ public:
 	int buff_cnt = 0;
 
 	ExtHardDisk *extHardDisk;
+	openFileTable opFileTable;
+	int numOpenFile = 0;
 
 	WrkHardDisk();
 
-	int File_Create(string file);
+	int File_Create(string file, string directory);
 	int File_Open(string file);
-	int File_Read(int fd, string buffer, int size);
-	int File_Write(int fd, string buffer, int size);
+	int File_Read(int fd);
+	int File_Write(int fd, int size);
 	int File_Seek(int fd, int offset);
 	int File_Close(int fd);
 	int File_Unlink(string file);
 
+	void diskAlloc();
 	void printInodeBitmap();
 	void printHardDiskContent();
 	void printDataBitMap();
 	void printAllInode();
 	void printBufferContent();
+	void printOpenFileTable();
 
 };
 

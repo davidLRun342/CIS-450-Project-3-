@@ -27,5 +27,6 @@ public:
 	int Disk_Write(int sector);
 	int Disk_Read(int sector);
 	int Dir_Read(string path, int size);
+	int Dir_Unlink(string path);
 
 };
