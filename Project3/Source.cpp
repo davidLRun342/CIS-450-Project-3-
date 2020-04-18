@@ -41,7 +41,7 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 	
 	//UMDLibFS->Disk_Read(2);
 	
-	UMDLibFS->wrkHardDisk->File_Create("ACanddn.doc", "/root/Mechanic");
+	UMDLibFS->wrkHardDisk->File_Create("/root/Mechanic", "/root/Mechanic");
 	UMDLibFS->wrkHardDisk->File_Create("Amazon1.doc", "/root/Mechanic");
 	UMDLibFS->wrkHardDisk->File_Create("Amazon2.doc", "/root/Mechanic");
 	UMDLibFS->wrkHardDisk->File_Create("Amazadn.cpp", "/root/Mechanic");
@@ -65,18 +65,37 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 	//UMDLibFS->wrkHardDisk->printOpenFileTable();
 
 	UMDLibFS->wrkHardDisk->File_Read(6);
-	UMDLibFS->wrkHardDisk->printBufferContent();
-	UMDLibFS->wrkHardDisk->File_Write(2, 67);
+	UMDLibFS->wrkHardDisk->File_Write(6, 56);
+	UMDLibFS->wrkHardDisk->File_Write(6, 56);
 	UMDLibFS->wrkHardDisk->File_Write(4, 389);
-	UMDLibFS->wrkHardDisk->File_Write(6, 433);
+	UMDLibFS->wrkHardDisk->File_Write(4, 24);
+	UMDLibFS->Disk_Save();
+	//UMDLibFS->wrkHardDisk->File_Write(6, 433);
+	//UMDLibFS->wrkHardDisk->File_Write(5, 34);
 
 	//UMDLibFS->wrkHardDisk->printOpenFileTable();
 
-	UMDLibFS->wrkHardDisk->printHardDiskContent();
+	///UMDLibFS->wrkHardDisk->printBufferContent();
 
-	//UMDLibFS->extHardDisk->rootDir.printInodeInfo();
 
-    //UMDLibFS->extHardDisk->printAllInode();
+	//UMDLibFS->wrkHardDisk->File_Seek(6, 455,20);
+	//UMDLibFS->wrkHardDisk->printBufferContent();
+
+	//UMDLibFS->Dir_Unlink("/root/Mechanic");
+	//UMDLibFS->extHardDisk->printAllInode();
+
+	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/Amazon2.doc");
+	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/Amazadn.cpp");
+	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/Cannder.xmls");
+	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/A.png");
+
+	//UMDLibFS->extHardDisk->printDataBitMap();
+
+	//cout << "THIS IS " << UMDLibFS->extHardDisk->inode_bitmap[0].inode.entrySize << endl;
+
+	//UMDLibFS->extHardDisk->printAllInode();
+
+   // UMDLibFS->extHardDisk->printAllInode();
 
 	//UMDLibFS->wrkHardDisk->printInodeBitmap();
 

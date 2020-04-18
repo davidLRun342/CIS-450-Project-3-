@@ -63,7 +63,7 @@ public:
 	int File_Open(string file);
 	int File_Read(int fd);
 	int File_Write(int fd, int size);
-	int File_Seek(int fd, int offset);
+	int File_Seek(int fd, int size, int offset);
 	int File_Close(int fd);
 	int File_Unlink(string file);
 

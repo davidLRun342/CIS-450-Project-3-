@@ -53,8 +53,7 @@ void  InodeDirectory :: printInodeInfo()
 		
 		for (int i = 0; i < da_block_cnt; i++)
 		{
-			cout << "\taddress: " << data_blocks[i].sizeHold << endl; 
-			cout << "\tsize" << data_blocks[i].sizeHold << endl;
+			cout << "\tsize: " << data_blocks[i].sizeHold << endl;
 		}
 	}
 	

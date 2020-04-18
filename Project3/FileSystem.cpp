@@ -93,6 +93,7 @@ int FileSystem::Disk_Load()
 }
 int FileSystem::Disk_Save()
 {
+	FS_Sync();
 	if (FS_Sync() == 0) return 0;
 	
 	cout << "ERROR, MEMORY WAS NOT ABLE TO SYNC TO EXTERNAL HARD DISK" << endl; 
@@ -234,11 +235,25 @@ int FileSystem::Dir_Read(string path, int size)
 int FileSystem::Dir_Unlink(string path)
 {
 	int i = 0;
-	
+	int j = 0;
+	int cntSect = 0;
 	bool found = false;
+	InodeDirectory temp[100];
+	int temp_cnt = 0;
+	
+	bool suc1 = false;
+	bool suc2 = false;
+	bool suc3 = false;
+	bool suc4 = false;
+
+	InodeDirectory empty;
+
+	string tempSr = "";
+
 
 	if (extHardDisk->init == true)
 	{
+		
 		if (path == "/root")
 		{
 			osErrMsg = "ERR_DEL_ROOT_DIR";
@@ -247,32 +262,91 @@ int FileSystem::Dir_Unlink(string path)
 		}
 		else if (path != "/root")
 		{
-			while (found == false && i < extHardDisk->totalInode)
+			//"ERASE CONNECTION WITH PARENT DIRECTORY"
+			for (int i = 0; i < extHardDisk->totalInode; i++)
 			{
-				if (extHardDisk->rootDir.directory_entries[i].filename == path)
+				for (int j = 0; j < extHardDisk->inode_bitmap[i].inode.entrySize; j++)
 				{
-					/*Check to is it has child directories and will delete those*/
-				
-					for (int j = i + 1; j < extHardDisk->rootDir.entrySize; j++)
+					
+					if (extHardDisk->inode_bitmap[i].inode.directory_entries[j].filename == path)
 					{
-						extHardDisk->rootDir.directory_entries[j -1 ] = extHardDisk->rootDir.directory_entries[j ];
-						
+
+						for (int cnt =j + 1; cnt < extHardDisk->inode_bitmap[i].inode.entrySize; cnt++)
+						{
+							extHardDisk->inode_bitmap[i].inode.directory_entries[cnt - 1] = extHardDisk->inode_bitmap[i].inode.directory_entries[cnt];
+
+						}
+						extHardDisk->inode_bitmap[i].inode.directory_entries[j + 1].filename = "";
+						extHardDisk->inode_bitmap[i].inode.directory_entries[j + 1].inode_num = -1;
+						extHardDisk->inode_bitmap[i].inode.entrySize--;
+						suc1 = true;
 					}
-					extHardDisk->rootDir.directory_entries[extHardDisk->rootDir.entrySize - 1].filename = "";
-					extHardDisk->rootDir.directory_entries[extHardDisk->rootDir.entrySize -1 ].inode_num = -1;
-					extHardDisk->rootDir.entrySize--;
-
-					extHardDisk->inode_bitmap[0].inode = extHardDisk->rootDir;
-
-					found = true;
-					cout << "\nUNLINK DIRECTORY SUCCESSFUL" << endl << endl;
-					return 0;
 				}
+			} 
+			while ( cntSect < extHardDisk->sector_sz && found == false)
+			{
+				if (extHardDisk->diskSectors[cntSect].inode.direct_name == path)
+				{
+					extHardDisk->diskSectors[cntSect].inode = empty;
+					extHardDisk->diskSectors[cntSect].state = 0;
+					extHardDisk->diskSectors[cntSect].size = 0;
+					found = true; 
+				}
+				cntSect++;
+			}
+			while (i <= extHardDisk->totalInode)
+			{
+				for (int cnt1 = 0; cnt1 < extHardDisk->inode_bitmap[i].inode.direct_name.length(); cnt1++)
+				{
+					tempSr += extHardDisk->inode_bitmap[i].inode.direct_name[cnt1];
 
+					if (tempSr == path)
+					{
+						extHardDisk->inode_bitmap[i].inode = empty;
+						extHardDisk->diskSectors[extHardDisk->inode_bitmap[i].address].inode = empty;
+						extHardDisk->diskSectors[extHardDisk->inode_bitmap[i].address].state = 0;
+						extHardDisk->diskSectors[extHardDisk->inode_bitmap[i].address].size = 0;
+						extHardDisk->data_bitmap[extHardDisk->inode_bitmap[i].address] = 0;
+
+						suc2 = true;
+						tempSr = "";
+					}
+				}
+				tempSr = "";
 				i++;
 			}
+			 // copies the remaining directories into temp array 
+			while (j < extHardDisk->totalInode)
+			{
+				if (extHardDisk->inode_bitmap[j].inode.file_type != "na")
+				{
+					suc3 = true;
+					temp[temp_cnt] = extHardDisk->inode_bitmap[j].inode;
+					temp_cnt++;		
+				}
+				j++;
+			}
+			//UPDATE INODE TABLE IN THE EXTERNAL HARD DISK 
+
+			for (int i = 0; i < extHardDisk->totalInode; i++)
+			{
+				suc4 = true;
+				extHardDisk->inode_bitmap[i].inode = temp[i];
+			}
+			extHardDisk->totalInode= temp_cnt;
+			
+			if (suc1 == true && suc2 == true && suc3 == true && suc4 == true)
+			{
+				cout << "DIRECTORY SUCCESSFULLY UNLINKED " << endl << endl; 
+				return 0;
+			}
+
 		}
+
 	}
-	cout << "\nFAIL TO UNLINK DIRECTORY" << endl << endl;
+
+	osErrMsg = " DISK MUST BE INITIALIZED TO UNLINK DIRECTORY";
+
+	cout << "\nDISK MUST BE INITIALIZED TO UNLINK DIRECTORY" << endl << endl;
 	return -1;
 }

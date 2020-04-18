@@ -11,8 +11,8 @@ using namespace std;
 /*============DIRECTORY ENTRIES DATA STRUCTURE  - can be stored into a directory file*/
 struct DirEntries
 {
-	string filename;
-	int inode_num;
+	string filename ="";
+	int inode_num = -1;
 
 }; typedef struct DirEntries DirEntries;
 

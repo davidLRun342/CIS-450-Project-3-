@@ -65,7 +65,6 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 
 					inode_bitmap[cnt].inode.file_sz = inode_bitmap[cnt].inode.file_sz + 20;
 				
-
 					inode_bitmap[totalInode].inode.file_type = "dir";
 					inode_bitmap[totalInode].inode.file_sz = 0;
 					inode_bitmap[totalInode].inode.inode_num = inode_num_a;
