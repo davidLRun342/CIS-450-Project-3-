@@ -139,6 +139,9 @@ int UserPage() {
 		if (cin.fail()) {
 			throw - 1;
 		}
+		if (input > 0 || input < 13) {
+			input = -1;
+		}
 	}
 	catch (...) {
 
