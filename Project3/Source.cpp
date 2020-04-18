@@ -14,7 +14,7 @@ using namespace std;
 string GetParent() {
 	string parent;
 
-	cout << "what directory do you want it to store in ?" << endl;
+	cout << "what directory do you want it to store in (Make sure to type in FULL PATHWAY including /root/...)?" << endl;
 	cin >> parent;
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -42,7 +42,7 @@ string FileName(string operation) {
 string DirectoryName() {
 	string dir_name;
 
-	cout << "what is the file Directory would you like it to be on?" << endl;
+	cout << "what is the file Directory would you like it to be on (Make sure to type in FULL PATHWAY including /root/...)?" << endl;
 	cin >> dir_name;
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -275,8 +275,8 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		else if (userInput == 7) {
 			DirectiveLog << "System: WHD_File_Write()" << endl;
 			
-			//UMDLibFS->wrkHardDisk->printOpenFileTable();
-			//cout << endl;
+			UMDLibFS->wrkHardDisk->printOpenFileTable();
+			cout << endl;
 
 			fd = FileD();
 			DirectiveLog << "User Input: " << fd << endl;
@@ -318,7 +318,7 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 			DirectiveLog << "System: WHD_File_Close()" << endl;
 
 			UMDLibFS->wrkHardDisk->printOpenFileTable();
-			cout << endl;
+			
 
 			fd = FileD();
 			DirectiveLog << "User Input: " << fd << endl;
@@ -335,6 +335,7 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		}
 
 		else if (userInput == 10) {
+
 			DirectiveLog << "System: WHD_File_Seek()" << endl;
 			
 			UMDLibFS->wrkHardDisk->printOpenFileTable();
@@ -360,7 +361,6 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		
 		else if (userInput == 11) {
 		DirectiveLog << "System: Dir_Create()" << endl;
-
 		path = GetPath();
 		DirectiveLog << "User Input: " << path << endl;
 		parent = GetParent();

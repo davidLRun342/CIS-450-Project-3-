@@ -1,47 +1,43 @@
-System: WHD_File_Write()
-User Input: 6
-User Input: 7
-Return: 
 System: Disk_Init()
 Return:  Disk_Init_Success
 System: FS_Boot()
 Return: FS_Boot_Success
-System: WHD_File_Create()
-User Input: a.jp
+System: FS_Boot()
+Return: ERR_FILE_BOOT
+System: FS_Sync()
+Return: FS_Sync_Success
+System: Dir_Create()
+User Input: Electrical
 User Input: na
+Return: Dir_Read_Success
+System: Dir_Create()
+User Input: Mechanical
+User Input: na
+Return: Dir_Read_Success
+System: WHD_File_Create()
+User Input: Mechanical
+User Input: n
+Return: WHD_File_Create_Success
+System: WHD_File_Create()
+User Input: tool.txt
+User Input: /root/Mechanical
 Return: WHD_File_Create_Success
 System: WHD_File_Open()
-User Input: /root/a.jp
+User Input: /root/Mechanical/toot.txt
+Return: 
+System: ERR_USER_INPUT
+System: WHD_File_Open()
+User Input: /root/Mechanical/tool.txt
 Return: WHD_File_Open_Success
 System: WHD_File_Read()
 User Input: 1
 Return: WHD_File_Return_Success
-System: WHD_File_Write()
+System: Dir_Unlink()
+User Input: and
+Return: ERR_FILE_BOOT
+System: Dir_Unlink()
+User Input: /root/Mechanical
+Return: Dir_Unlink_Success
+System: WHD_File_Close()
 User Input: 1
-User Input: 440
-System: WHD_File_Open()
-User Input: dddd
-Return: 
-System: WHD_File_Create()
-User Input: draw.txt
-User Input: na
-Return: WHD_File_Create_Success
-System: WHD_File_Open()
-User Input: root/draw.txt
-Return: 
-System: WHD_File_Open()
-User Input: /root/draw.txt
-Return: WHD_File_Open_Success
-System: WHD_File_Open()
-User Input: dd
-Return: 
-System: WHD_File_Create()
-User Input: wand.txt
-User Input: dd
-Return: WHD_File_Create_Success
-System: WHD_File_Open()
-User Input: /root/wand.txt
-Return: WHD_File_Open_Success
-System: WHD_File_Read()
-User Input: 2
-Return: WHD_File_Return_Success
+Return: WHD_File_Close_Success

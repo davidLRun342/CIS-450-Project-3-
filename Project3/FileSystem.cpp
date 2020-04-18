@@ -242,29 +242,34 @@ int FileSystem::Dir_Read(string path, int size)
 	bool found = false;
 	int i = 0;
 	int temp = 0;
-	while (found == false)
+	if (extHardDisk->init == true)
 	{
-		if (extHardDisk->inode_bitmap[i].inode.direct_name == path)
+		while (found == false)
 		{
-			temp = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
-
-			if (temp < size)
+			if (extHardDisk->inode_bitmap[i].inode.direct_name == path)
 			{
-				wrkHardDisk->buffer.inodeblock = extHardDisk->inode_bitmap[i].inode; // stores into the buffer
-				wrkHardDisk->buffer.size = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
-				found = true;
-				return 0; 
-			}
-			osErrMsg = "ERR_BUFF_TO_SMALL";
-			cout << "\n" << osErrMsg << endl << endl;
-			cout << "BUFFER CANNOT STOR THAT LOAD OF DATA!!" << endl;
+				temp = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
 
-			return -1;	
+				if (temp < size)
+				{
+					wrkHardDisk->buffer.inodeblock = extHardDisk->inode_bitmap[i].inode; // stores into the buffer
+					wrkHardDisk->buffer.size = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
+					found = true;
+					return 0;
+				}
+				osErrMsg = "ERR_BUFF_TO_SMALL";
+				cout << "\n" << osErrMsg << endl << endl;
+				cout << "BUFFER CANNOT STORE THAT LOAD OF DATA!!" << endl;
+
+				return -1;
+			}
+			i++;
 		}
-		i++;
+		osErrMsg = "ERR_DIR_READ";
+		cout << "PATH DOES NOT EXIST!!" << endl;
+		return -1;
 	}
-	osErrMsg = "ERR_DIR_READ";
-	cout << "PATH DOES NOT EXIST!!" << endl;
+	cout << "DISK MUST BE INITIALIZED TO READ DIRECTORY" << endl << endl;
 	return -1;
 }
 
@@ -378,7 +383,8 @@ int FileSystem::Dir_Unlink(string path)
 			}
 
 		}
-
+		cout << "DIRECTORY IS NOT FOUND, PLEASE TYPE IN FULL PATHWAY NAME!!" << endl << endl;
+		return -1;
 	}
 
 	osErrMsg = " DISK MUST BE INITIALIZED TO UNLINK DIRECTORY";

@@ -122,8 +122,6 @@ int WrkHardDisk::File_Open(string file)
 		{
 			while (cnt < SECTOR_SZ && success == false )
 			{
-				if (extHardDisk->inode_bitmap[cnt].inode.file_type == "file")
-				{
 					if (extHardDisk->inode_bitmap[cnt].inode.direct_name == file)
 					{
 
@@ -139,14 +137,14 @@ int WrkHardDisk::File_Open(string file)
 								
 								numOpenFile++;
 								fileDescr++;
-								cout << "\nFILE HAS OPENNED SUCESSFULLY" << endl << endl;
+								cout << "\nFILE HAS OPENED SUCESSFULLY" << endl << endl;
 								success = true;
 								return 0;
 							}
 							j++;
 						}
 					}
-				}
+				
 				
 				cnt++;
 			}
