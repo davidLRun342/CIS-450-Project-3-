@@ -11,7 +11,16 @@
 #include <time.h>
 using namespace std;
 
+string GetParent() {
+	string parent;
 
+	cout << "what directory do you want it to store in ?" << endl;
+	cin >> parent;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	return parent;
+}
 string GetPath() {
 	string path;
 	cout << "What path would you like?" << endl;
@@ -33,7 +42,7 @@ string FileName(string operation) {
 string DirectoryName() {
 	string dir_name;
 
-	cout << "what file would you like to open" << endl;
+	cout << "what is the file Directory would you like it to be on?" << endl;
 	cin >> dir_name;
 	cin.clear();
 	cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -139,7 +148,7 @@ int UserPage() {
 		if (cin.fail()) {
 			throw - 1;
 		}
-		if (input > 0 || input < 13) {
+		if (input < 0 || input > 13) {
 			input = -1;
 		}
 	}
@@ -157,6 +166,8 @@ int UserPage() {
 int main()
 {
 	ofstream DirectiveLog;
+	
+
 	DirectiveLog.open("DirectiveLog");
 /*THIS IS TO INITIALIZE AND CONNECT THE FILE SYSTEM, 
 EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
@@ -175,6 +186,7 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		int fd = 0;
 		int offset = 0;
 		int size = 0;
+		string parent= "";
 		string file = "";
 		string directory = "";
 		string path="";
@@ -262,9 +274,13 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 
 		else if (userInput == 7) {
 			DirectiveLog << "System: WHD_File_Write()" << endl;
+			
+			//UMDLibFS->wrkHardDisk->printOpenFileTable();
+			//cout << endl;
 
 			fd = FileD();
 			DirectiveLog << "User Input: " << fd << endl;
+
 			size = GetSize();
 			DirectiveLog << "User Input: " << size << endl;
 
@@ -280,10 +296,16 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		else if (userInput == 8) {
 			DirectiveLog << "System: WHD_File_Read()" << endl;
 
+			UMDLibFS->wrkHardDisk->printOpenFileTable();
+			cout << endl;
+
 			fd = FileD();
+			
+			
 			DirectiveLog << "User Input: " << fd << endl;
 
 			response = UMDLibFS->wrkHardDisk->File_Read(fd);
+			
 			if (response == 0) {
 				DirectiveLog << "Return: WHD_File_Return_Success" << endl;
 			}
@@ -295,11 +317,15 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		else if (userInput == 9) {
 			DirectiveLog << "System: WHD_File_Close()" << endl;
 
+			UMDLibFS->wrkHardDisk->printOpenFileTable();
+			cout << endl;
+
 			fd = FileD();
 			DirectiveLog << "User Input: " << fd << endl;
 
 
 			response = UMDLibFS->wrkHardDisk->File_Close(fd);
+			UMDLibFS->wrkHardDisk->printOpenFileTable();
 			if (response == 0) {
 				DirectiveLog << "Return: WHD_File_Close_Success" << endl;
 			}
@@ -310,6 +336,9 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 
 		else if (userInput == 10) {
 			DirectiveLog << "System: WHD_File_Seek()" << endl;
+			
+			UMDLibFS->wrkHardDisk->printOpenFileTable();
+			cout << endl;
 
 			fd = FileD();
 			DirectiveLog << "User Input: " << fd << endl;
@@ -317,6 +346,8 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 			DirectiveLog << "User Input: " << size << endl;
 			offset = GetOffset();
 			DirectiveLog << "User Input: " << offset << endl;
+
+			UMDLibFS->wrkHardDisk->printOpenFileTable();
 
 			response = UMDLibFS->wrkHardDisk->File_Seek(fd,size ,offset);
 			if (response == 0) {
@@ -326,10 +357,23 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 				DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
 			}
 		}
-
+		
 		else if (userInput == 11) {
 		DirectiveLog << "System: Dir_Create()" << endl;
-	
+
+		path = GetPath();
+		DirectiveLog << "User Input: " << path << endl;
+		parent = GetParent();
+		DirectiveLog << "User Input: " << parent << endl;
+
+		response = UMDLibFS->extHardDisk->Dir_Create(path, parent);
+
+		if (response == 0) {
+			DirectiveLog << "Return: Dir_Read_Success" << endl;
+		}
+		if (response == -1) {
+			DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
+		}
 		}
 
 		else if (userInput == 12) {

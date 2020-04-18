@@ -199,7 +199,7 @@ int WrkHardDisk::File_Write(int fd, int size )
 	int temp = 0;
 	int cnt = 0;
 	bool write = true;
-
+	bool found = false;
 	filePointer = 0;
 
 	if (extHardDisk->init == true)
@@ -222,7 +222,7 @@ int WrkHardDisk::File_Write(int fd, int size )
 					{
 						opFileTable.entries[cnt].inodeblock.file_sz  += buffer.size;
 						
-							
+						found = true;
 						if (buffer.inodeblock.file_sz < 512)
 						{
 							opFileTable.entries[cnt].inodeblock.data_blocks[opFileTable.entries[cnt].inodeblock.da_block_cnt].sizeHold = size;
@@ -255,7 +255,14 @@ int WrkHardDisk::File_Write(int fd, int size )
 						write = true;
 						return opFileTable.entries[cnt].inodeblock.file_sz;
 					}
+					
 					cnt++;
+				}
+				
+				if (found == false)
+				{
+					cout << "FILE DESCRIPTOR DOES NOT EXIST, PLEASE CHOOSE ANOTHER ONE FROM THE TABLE PROVIDED! " << endl;
+					return -1;
 				}
 			}
 			cout << "DATA BLOCKS CAPACITY REACHED " << endl;

@@ -1,8 +1,47 @@
-System: FS_Sync()
-Return: ERR_FILE_SYNC
+System: WHD_File_Write()
+User Input: 6
+User Input: 7
+Return: 
 System: Disk_Init()
+Return:  Disk_Init_Success
 System: FS_Boot()
 Return: FS_Boot_Success
-13.  Dir_Unlink()
+System: WHD_File_Create()
+User Input: a.jp
+User Input: na
+Return: WHD_File_Create_Success
+System: WHD_File_Open()
+User Input: /root/a.jp
+Return: WHD_File_Open_Success
+System: WHD_File_Read()
 User Input: 1
-Return:  DISK MUST BE INITIALIZED TO UNLINK DIRECTORY
+Return: WHD_File_Return_Success
+System: WHD_File_Write()
+User Input: 1
+User Input: 440
+System: WHD_File_Open()
+User Input: dddd
+Return: 
+System: WHD_File_Create()
+User Input: draw.txt
+User Input: na
+Return: WHD_File_Create_Success
+System: WHD_File_Open()
+User Input: root/draw.txt
+Return: 
+System: WHD_File_Open()
+User Input: /root/draw.txt
+Return: WHD_File_Open_Success
+System: WHD_File_Open()
+User Input: dd
+Return: 
+System: WHD_File_Create()
+User Input: wand.txt
+User Input: dd
+Return: WHD_File_Create_Success
+System: WHD_File_Open()
+User Input: /root/wand.txt
+Return: WHD_File_Open_Success
+System: WHD_File_Read()
+User Input: 2
+Return: WHD_File_Return_Success
