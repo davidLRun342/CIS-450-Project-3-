@@ -1,2 +1,4 @@
 C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\Debug\Project3.exe
 C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\Debug\Project3.pdb
+D:\Fallenanimes\Documents\CIS-450-Project-3-\Project3\Debug\Project3.exe
+D:\Fallenanimes\Documents\CIS-450-Project-3-\Project3\Debug\Project3.pdb

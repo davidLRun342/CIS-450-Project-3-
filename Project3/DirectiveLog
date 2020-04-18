@@ -1,0 +1,8 @@
+System: FS_Sync()
+Return: ERR_FILE_SYNC
+System: Disk_Init()
+System: FS_Boot()
+Return: FS_Boot_Success
+13.  Dir_Unlink()
+User Input: 1
+Return:  DISK MUST BE INITIALIZED TO UNLINK DIRECTORY

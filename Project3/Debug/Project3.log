@@ -1,3 +1,5 @@
-﻿  WrkHardDisk.cpp
-C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\WrkHardDisk.cpp(371,31): warning C4018: '<': signed/unsigned mismatch
-  Project3.vcxproj -> C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\Debug\Project3.exe
+﻿  ExtHardDisk.cpp
+  Source.cpp
+  Generating Code...
+D:\Fallenanimes\Documents\CIS-450-Project-3-\Project3\ExtHardDisk.cpp(48): warning C4715: 'ExtHardDisk::Disk_Init': not all control paths return a value
+  Project3.vcxproj -> D:\Fallenanimes\Documents\CIS-450-Project-3-\Project3\Debug\Project3.exe

@@ -14,13 +14,13 @@ ExtHardDisk::ExtHardDisk()
 		data_bitmap[i] = 0;
 	}
 }
-int ExtHardDisk:: Disk_Init()
+int ExtHardDisk::Disk_Init()
 {
 	magicnum = 4;
 	sector_sz = SECTOR_SZ;
 	sector_unit = SECTOR_UNIT;
-	init = true;
-
+	if (init == false) {
+		init = true;
 	cout << "\nEXTERNAL HARD DISK IS INITIALIZED! " << endl;
 	//Initialize the root directory 
 	rootDir.file_sz = 0;
@@ -40,8 +40,13 @@ int ExtHardDisk:: Disk_Init()
 	data_bitmap[0] = 1;
 	data_bitmap[1] = 1;
 	data_bitmap[2] = 1;
-	
+
 	return 0;
+	}
+	else {
+	cout << "\nERROR!! EXRTERNAL HARD DISK HAS BEED INITIALIZED ALREADY!!" << endl;
+	return -1;
+	}
 }
 
 int ExtHardDisk::Dir_Create(string path, string directory)

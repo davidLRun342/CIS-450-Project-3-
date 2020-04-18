@@ -3,30 +3,42 @@
 #include"FileSystem.h"
 
 
-int FileSystem:: FS_BOOT()
+int FileSystem::FS_BOOT()
 {
-	hasBooted = true;
 
 	if (extHardDisk->init == false)
 	{
 		osErrMsg = "ERR_FILE_BOOT";
-		cout <<"\n\n" << osErrMsg <<" - MUST INITIALIZE THE EXTERNAL HARD DISK! " << endl <<endl;
-		cout << "External Hard Disk will now be initialized for you....." << endl<<endl;
-		
+		cout << "\n\n" << osErrMsg << " - MUST INITIALIZE THE EXTERNAL HARD DISK! " << endl << endl;
+		cout << "External Hard Disk will now be initialized for you....." << endl << endl;
+
 		extHardDisk->Disk_Init();
 
 		return -1;
 	}
+	if (hasBooted == false && hasReseted == false) {
+		hasBooted = true;
+		cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS SUCESSEFULLy BOOTED!!" << endl;
 
-	cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS SUCESSEFULLy BOOTED!!" << endl;
-	
-	Disk_Load();
-	return 0;
+		Disk_Load();
+		return 0;
+	}
+	if (hasBooted == true && hasReseted == false) {
+		osErrMsg = "ERR_FILE_BOOT";
+		cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS ALREADY BEEN BOOTED!!" << endl;
+		return -1;
+	}
+	if (hasBooted == true && hasReseted == true) {
+		hasReseted = false;
+		cout << "\nTHE UMD LIBRARY FILE SYSTEM HAS BEEN REBOOTED!!" << endl;
+		return 0;
+	}
+
 }
 
-int FileSystem :: FS_Sync()
+int FileSystem::FS_Sync()
 {
-	if (hasBooted == true)
+	if (hasBooted == true && hasReseted == false)
 	{
 		cout << "\nSYNCING MEMORY TO EXTERNAL HARD DISK.....PLEASE WAIT A MOMENT!" << endl << endl;
 
@@ -42,18 +54,27 @@ int FileSystem :: FS_Sync()
 
 		return 0;
 	}
-	
-	cout << "\n\nSYSTEM MUST BE BOOTED IN ORDER TO SYNC !!! PLEASE BOOT FS!" << endl <<endl; 
-	return -1;
+	else {
+		cout << "\n\nSYSTEM MUST BE BOOTED IN ORDER TO SYNC !!! PLEASE BOOT FS!" << endl << endl;
+		osErrMsg = "ERR_FILE_SYNC";
+		return -1;
+	}
+
 }
 
-int FileSystem:: FS_Reset()
+int FileSystem::FS_Reset()
 {
-	if (hasBooted == true)
+	if (hasBooted == true && hasReseted == false)
 	{
 		FS_Sync();
-		hasBooted = false;
-		
+		hasReseted = true;
+		return 0;
+	}
+	if (hasBooted == true && hasReseted == true) {
+
+		osErrMsg = "ERR_FILE_RESET";
+		cout << "file system is already locked" << endl;
+		return -1;
 	}
 	if (hasBooted == false || extHardDisk->init == false)
 	{
@@ -61,12 +82,10 @@ int FileSystem:: FS_Reset()
 		cout << osErrMsg << endl << endl;
 		cout << "SYSTEM SHUTDOWN...." << endl;
 		cout << "\nFILE SYSTEM CURRENTLY UNAVAILABLE......" << endl;
-		
+
 		return -1;
 	}
-	return 0; 
 }
-
 
 int FileSystem::Disk_Load()
 {
@@ -88,18 +107,26 @@ int FileSystem::Disk_Load()
 		
 		return 0;
 	}
-	cout << "DISK LOAD WAS NOT PERFORMED CORRECTLY.. PLEASE INITIALIZE DISK AND BOOT THE FILE SYSTEM!" << endl << endl; 
-	return -1;
+	else {
+		osErrMsg = "ERR_DSK_LOAD";
+		cout << "DISK LOAD WAS NOT PERFORMED CORRECTLY.. PLEASE INITIALIZE DISK AND BOOT THE FILE SYSTEM!" << endl << endl;
+		return -1;
+	}
 }
+
 int FileSystem::Disk_Save()
 {
 	FS_Sync();
-	if (FS_Sync() == 0) return 0;
-	
-	cout << "ERROR, MEMORY WAS NOT ABLE TO SYNC TO EXTERNAL HARD DISK" << endl; 
+	if (FS_Sync() == 0) {
+		return 0;
+	}
+	else {
+	cout << "ERROR, MEMORY WAS NOT ABLE TO SYNC TO EXTERNAL HARD DISK" << endl;
 
 	return -1;
+	}
 }
+
 int FileSystem::Disk_Write(int sector)
 {
 	int i = 0;
@@ -134,18 +161,21 @@ int FileSystem::Disk_Write(int sector)
 				}
 			}
 		}
-
+		else {
+			osErrMsg = "ERR_READ_INVALID_PARAM";
+			cout << osErrMsg << endl << endl;
+			cout << "SECTOR IS LESS THAN 0 OR GREATER THAN SECTOR MAX! " << endl << endl;
+			return -1;
+		}
+	}
+	else {
 		osErrMsg = "ERR_READ_INVALID_PARAM";
-		cout << osErrMsg << endl << endl;
-		cout << "SECTOR IS LESS THAN 0 OR GREATER THAN SECTOR MAX! " << endl << endl;
+		cout << "EXTERNAL HARD DISK NEED TO INITIALIZE BEFORE DISK WRITE! " << endl;
 		return -1;
-		
 	}
 
-	cout << "EXTERNAL HARD DISK NEED TO INITIALIZE BEFORE DISK WRITE! " << endl;
-
-	return -1;
 }
+
 int FileSystem::Disk_Read(int sector )
 {
 	int i = 0;
@@ -197,12 +227,16 @@ int FileSystem::Disk_Read(int sector )
 			}
 		}	
 	}
-	extHardDisk->dskErrMsg = "E_READ_INVALID_PARAM";
-	cout << "\n" << extHardDisk->dskErrMsg << endl << endl;
-	cout << "EXTERNAL HARD DISK FAILED TO READ " << endl << endl;
+	else {
+		extHardDisk->dskErrMsg = "E_READ_INVALID_PARAM";
+		cout << "\n" << extHardDisk->dskErrMsg << endl << endl;
+		cout << "EXTERNAL HARD DISK FAILED TO READ " << endl << endl;
 
-	return -1;
+		return -1;
+	}
+
 }
+
 int FileSystem::Dir_Read(string path, int size)
 {
 	bool found = false;
@@ -229,9 +263,11 @@ int FileSystem::Dir_Read(string path, int size)
 		}
 		i++;
 	}
+	osErrMsg = "ERR_DIR_READ";
 	cout << "PATH DOES NOT EXIST!!" << endl;
 	return -1;
 }
+
 int FileSystem::Dir_Unlink(string path)
 {
 	int i = 0;

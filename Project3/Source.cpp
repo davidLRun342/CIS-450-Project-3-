@@ -2,6 +2,7 @@
 #include<fstream>
 #include<sstream>
 #include<string.h>
+#include<ostream>
 
 #include "WrkHardDisk.h"
 #include "ExtHardDisk.h"
@@ -10,9 +11,150 @@
 #include <time.h>
 using namespace std;
 
+
+string GetPath() {
+	string path;
+	cout << "What path would you like?" << endl;
+	cin >> path;
+	return path;
+}
+
+string FileName(string operation) {
+	string fileName;
+
+	cout << "what file would you like to "<< operation << endl;
+	cin >> fileName;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	return fileName;
+}
+
+string DirectoryName() {
+	string dir_name;
+
+	cout << "what file would you like to open" << endl;
+	cin >> dir_name;
+	cin.clear();
+	cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+	return dir_name;
+}
+
+int FileD() {
+	int fd;
+	while (true) {
+		cout << "What is the fd?" << endl;
+		try {
+
+			cin >> fd;
+
+			if (cin.fail()) {
+				throw - 1;
+			}
+			else {
+				return fd;
+			}
+		}
+		catch (...) {
+
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			fd = -1;
+		}
+	}
+}
+
+int GetSize() {
+	int size = 0;
+	while (true) {
+		cout << "What is the size?" << endl;
+		try {
+
+			cin >> size;
+
+			if (cin.fail()) {
+				throw - 1;
+			}
+			else {
+				return size;
+			}
+		}
+		catch (...) {
+
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			size = -1;
+		}
+
+	}
+}
+
+int GetOffset() {
+	int offset = 0;
+	while (true) {
+		cout << "What would be the  offset?" << endl;
+		try {
+
+			cin >> offset;
+
+			if (cin.fail()) {
+				throw - 1;
+			}
+			else {
+				return offset;
+			}
+		}
+		catch (...) {
+
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			offset = -1;
+		}
+	}
+
+}
+
+int UserPage() {
+	int input = 0;
+	cout << "Please slect an option" << endl;
+	cout << "1. Disk_Init()" << endl;
+	cout << "2. FS_Boot()" << endl;
+	cout << "3. FS_Sync()" << endl;
+	cout << "4. FS_Reset()" << endl;
+	cout << "5. WHD_File_Open()" << endl;
+	cout << "6. WHD_File_Create()" << endl;
+	cout << "7. WHD_File_Write()" << endl;
+	cout << "8. WHD_File_Read()" << endl;
+	cout << "9. WHD_File_Close()" << endl;
+	cout << "10. WHD_File_Seek()" << endl;
+	cout << "11. Dir_Create()" << endl;
+	cout << "12. Dir_Read()" << endl;
+	cout << "13. Dir_Unlink()" << endl;
+	cout << "0. Exit" << endl;
+	try {
+
+		cin >> input;
+
+		if (cin.fail()) {
+			throw - 1;
+		}
+	}
+	catch (...) {
+
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		input = -1;
+	}
+	return input;
+
+}
+
+
 int main()
 {
- 	
+	ofstream DirectiveLog;
+	DirectiveLog.open("DirectiveLog");
 /*THIS IS TO INITIALIZE AND CONNECT THE FILE SYSTEM, 
 EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 
@@ -24,86 +166,210 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 	UMDLibFS->wrkHardDisk = wrkHardDisk;
 	UMDLibFS->wrkHardDisk->extHardDisk = extHardDisk;
 
-	UMDLibFS->extHardDisk->Disk_Init();
+	while (true) {
+		int userInput = 0;
+		int response = 0;
+		int fd = 0;
+		int offset = 0;
+		int size = 0;
+		string file = "";
+		string directory = "";
+		string path="";
+		userInput = UserPage();
+
+		if (userInput == 1) {
+			DirectiveLog << "System: Disk_Init()" << endl;
+			response = UMDLibFS->extHardDisk->Disk_Init();
+			if (response == 0) {
+				DirectiveLog << "Return:  Disk_Init_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
+			}
+
+		}
+
+		else if (userInput == 2) {
+			DirectiveLog << "System: FS_Boot()" << endl;
+			response = UMDLibFS->FS_BOOT();
+
+			if (response == 0) {
+				DirectiveLog << "Return: FS_Boot_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 3) {
+			DirectiveLog << "System: FS_Sync()" << endl;
+			response = UMDLibFS->FS_Sync();
+			if (response == 0) {
+				DirectiveLog << "Return: FS_Sync_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 4) {
+			DirectiveLog << "System: FS_Reset()" << endl;
+			response = UMDLibFS->FS_Reset();
+			if (response == 0) {
+				DirectiveLog << "Return: FS_Reset_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 5) {
+			DirectiveLog << "System: WHD_File_Open()" << endl;
+
+			file = FileName("open");
+			DirectiveLog << "User Input: " << file << endl;
+
+
+			response = UMDLibFS->wrkHardDisk->File_Open(file);
+			if (response == 0) {
+				DirectiveLog << "Return: WHD_File_Open_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 6) {
+			DirectiveLog << "System: WHD_File_Create()" << endl;
+			
+			file = FileName("create");
+			DirectiveLog << "User Input: " << file << endl;
+			directory = DirectoryName();
+			DirectiveLog << "User Input: " << directory<< endl;
+
+
+			response = UMDLibFS->wrkHardDisk->File_Create(file, directory);
+			if (response == 0) {
+				DirectiveLog << "Return: WHD_File_Create_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 7) {
+			DirectiveLog << "System: WHD_File_Write()" << endl;
+
+			fd = FileD();
+			DirectiveLog << "User Input: " << fd << endl;
+			size = GetSize();
+			DirectiveLog << "User Input: " << size << endl;
+
+			response = UMDLibFS->wrkHardDisk->File_Write(fd, size);
+			if (response == 0) {
+				DirectiveLog << "Return: WHD_File_Open_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 8) {
+			DirectiveLog << "System: WHD_File_Read()" << endl;
+
+			fd = FileD();
+			DirectiveLog << "User Input: " << fd << endl;
+
+			response = UMDLibFS->wrkHardDisk->File_Read(fd);
+			if (response == 0) {
+				DirectiveLog << "Return: WHD_File_Return_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 9) {
+			DirectiveLog << "System: WHD_File_Close()" << endl;
+
+			fd = FileD();
+			DirectiveLog << "User Input: " << fd << endl;
+
+
+			response = UMDLibFS->wrkHardDisk->File_Close(fd);
+			if (response == 0) {
+				DirectiveLog << "Return: WHD_File_Close_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 10) {
+			DirectiveLog << "System: WHD_File_Seek()" << endl;
+
+			fd = FileD();
+			DirectiveLog << "User Input: " << fd << endl;
+			size = GetSize();
+			DirectiveLog << "User Input: " << size << endl;
+			offset = GetOffset();
+			DirectiveLog << "User Input: " << offset << endl;
+
+			response = UMDLibFS->wrkHardDisk->File_Seek(fd,size ,offset);
+			if (response == 0) {
+				DirectiveLog << "Return: WHD_File_Seek_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
+			}
+		}
+
+		else if (userInput == 11) {
+		DirectiveLog << "System: Dir_Create()" << endl;
 	
-	int s1= UMDLibFS->extHardDisk->Dir_Create("Camera","");
-	int s2 =UMDLibFS->extHardDisk->Dir_Create("Mechanic", "");
-	int s3 =UMDLibFS->extHardDisk->Dir_Create("Engineer", "");
-	int s4 = UMDLibFS->extHardDisk->Dir_Create("Schedule", "/root/Mechanic");
-	int s5 = UMDLibFS->extHardDisk->Dir_Create("SeedPlant", "/root/Mechanic/Schedule");
-	int s6 = UMDLibFS->extHardDisk->Dir_Create("Flower", "/root/Mechanic/Schedule");
-	int s7 = UMDLibFS->extHardDisk->Dir_Create("Ff", "/root/Mechanic/Schedule");
-	int s8 = UMDLibFS->extHardDisk->Dir_Create("sand", "/root/Mechanic/Schedule");
-	int s9 = UMDLibFS->extHardDisk->Dir_Create("Fr", "/root/Mechanic/Schedule");
-	int s10 = UMDLibFS->extHardDisk->Dir_Create("r", "/root/Mechanic/Schedule");
+		}
 
-	int rec4 = UMDLibFS->FS_BOOT();
-	
-	//UMDLibFS->Disk_Read(2);
-	
-	UMDLibFS->wrkHardDisk->File_Create("/root/Mechanic", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("Amazon1.doc", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("Amazon2.doc", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("Amazadn.cpp", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("Cannder.xmls", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("A.png", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("Cars.jpg", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("engine.jpg", "/root/Mechanic");
-	UMDLibFS->wrkHardDisk->File_Create("oil.jpg", "/root/Engineer");
-	UMDLibFS->wrkHardDisk->File_Create("Truck.jpg", "/root/Engineer");
+		else if (userInput == 12) {
+		DirectiveLog << "System: Dir_Read()" << endl;
 
-	UMDLibFS->Disk_Load();
-	
-	UMDLibFS->wrkHardDisk->File_Open("/root/Mechanic/A.png");
-	UMDLibFS->wrkHardDisk->File_Open("/root/Mechanic/ACanddn.doc");
-	UMDLibFS->wrkHardDisk->File_Open("/root/Mechanic/Amazon1.doc");
-	UMDLibFS->wrkHardDisk->File_Open("/root/Mechanic/Amazon2.doc");
-	UMDLibFS->wrkHardDisk->File_Open("/root/Mechanic/Amazadn.cpp");
-	UMDLibFS->wrkHardDisk->File_Open("/root/Mechanic/Cannder.xmls");
-	UMDLibFS->wrkHardDisk->File_Open("/root/Engineer/oil.jpg");
+		path = GetPath();
+		DirectiveLog << "User Input: " << path << endl;
+		size = GetSize();
+		DirectiveLog << "User Input: " << size << endl;
 
-	//UMDLibFS->wrkHardDisk->printOpenFileTable();
+		response = UMDLibFS->Dir_Read(path, size);
+			if (response == 0) {
+				DirectiveLog << "Return: Dir_Read_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
+			}
+		}
 
-	UMDLibFS->wrkHardDisk->File_Read(6);
-	UMDLibFS->wrkHardDisk->File_Write(6, 56);
-	UMDLibFS->wrkHardDisk->File_Write(6, 56);
-	UMDLibFS->wrkHardDisk->File_Write(4, 389);
-	UMDLibFS->wrkHardDisk->File_Write(4, 24);
-	UMDLibFS->Disk_Save();
-	//UMDLibFS->wrkHardDisk->File_Write(6, 433);
-	//UMDLibFS->wrkHardDisk->File_Write(5, 34);
+		else if (userInput == 13) {
+		DirectiveLog << "System: Dir_Unlink()" << endl;
 
-	//UMDLibFS->wrkHardDisk->printOpenFileTable();
+		path = GetPath();
+		DirectiveLog << "User Input: " << path << endl;
 
-	///UMDLibFS->wrkHardDisk->printBufferContent();
+		response = UMDLibFS->Dir_Unlink(path);
+			if (response == 0) {
+				DirectiveLog << "Return: Dir_Unlink_Success" << endl;
+			}
+			if (response == -1) {
+				DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
+			}
+		}
 
+		if (userInput == 0) {
+			DirectiveLog << "Return: EXIT_SYSTEM" << endl;
+			break;
+		}
 
-	//UMDLibFS->wrkHardDisk->File_Seek(6, 455,20);
-	//UMDLibFS->wrkHardDisk->printBufferContent();
-
-	//UMDLibFS->Dir_Unlink("/root/Mechanic");
-	//UMDLibFS->extHardDisk->printAllInode();
-
-	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/Amazon2.doc");
-	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/Amazadn.cpp");
-	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/Cannder.xmls");
-	UMDLibFS->wrkHardDisk->File_Unlink("/root/Mechanic/A.png");
-
-	//UMDLibFS->extHardDisk->printDataBitMap();
-
-	//cout << "THIS IS " << UMDLibFS->extHardDisk->inode_bitmap[0].inode.entrySize << endl;
-
-	//UMDLibFS->extHardDisk->printAllInode();
-
-   // UMDLibFS->extHardDisk->printAllInode();
-
-	//UMDLibFS->wrkHardDisk->printInodeBitmap();
-
-	//UMDLibFS->extHardDisk->printAllInode();
-	system("PAUSE");
+		if (userInput == -1) {
+			DirectiveLog << "System: ERR_USER_INPUT" << endl;
+		}
+	}
+	system("pause");
 	return 0;
 }
-
-
-
-
