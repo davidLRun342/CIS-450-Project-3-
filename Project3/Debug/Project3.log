@@ -1,7 +1,10 @@
 ﻿  FileSystem.cpp
-C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(346,29): warning C4018: '<': signed/unsigned mismatch
+C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(339,29): warning C4018: '<': signed/unsigned mismatch
+  WrkHardDisk.cpp
+C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\WrkHardDisk.cpp(375,31): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(82): warning C4715: 'FileSystem::FS_Reset': not all control paths return a value
 C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(37): warning C4715: 'FileSystem::FS_BOOT': not all control paths return a value
-C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(88): warning C4715: 'FileSystem::FS_Reset': not all control paths return a value
-C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(177): warning C4715: 'FileSystem::Disk_Write': not all control paths return a value
-C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(238): warning C4715: 'FileSystem::Disk_Read': not all control paths return a value
+C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(171): warning C4715: 'FileSystem::Disk_Write': not all control paths return a value
+C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\FileSystem.cpp(232): warning C4715: 'FileSystem::Disk_Read': not all control paths return a value
   Project3.vcxproj -> C:\Users\David Liang\Documents\GitHub\CIS-450-Project 3\CIS-450-Project-3-\Project3\Debug\Project3.exe

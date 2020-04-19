@@ -124,7 +124,6 @@ int WrkHardDisk::File_Open(string file)
 			{
 					if (extHardDisk->inode_bitmap[cnt].inode.direct_name == file)
 					{
-
 						while (j < 10)
 						{
 							if (opFileTable.entries[j].state == 0)

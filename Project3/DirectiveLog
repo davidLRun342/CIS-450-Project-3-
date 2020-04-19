@@ -2,5 +2,20 @@ System: Disk_Init()
 Return:  Disk_Init_Success
 System: FS_Boot()
 Return: FS_Boot_Success
-System: View External Hard Disk Content
+System: Dir_Create()
+User Input: A
+User Input: na
+Return: Dir_Read_Success
+System: Dir_Create()
+User Input: B
+User Input: root/A
+Return: Dir_Read_Success
+System: View File System Directory
+System: Dir_Create()
+User Input: C
+User Input: /root/A/B
+Return: Dir_Read_Success
+System: View File System Directory
+System: FS_Sync()
+Return: FS_Sync_Success
 System: View File System Directory

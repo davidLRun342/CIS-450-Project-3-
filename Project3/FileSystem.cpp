@@ -42,13 +42,7 @@ int FileSystem::FS_Sync()
 	{
 		cout << "\nSYNCING MEMORY TO EXTERNAL HARD DISK.....PLEASE WAIT A MOMENT!" << endl << endl;
 
-		wrkHardDisk->rootDir = extHardDisk->rootDir;
-
-		for (int i = 0; i < wrkHardDisk->sector_sz; i++)
-		{
-			extHardDisk->diskSectors[i] = wrkHardDisk->diskSectors[i];
-			extHardDisk->inode_bitmap[i] = wrkHardDisk->inode_bitmap[i];
-		}
+		extHardDisk->rootDir = wrkHardDisk->rootDir;
 
 		cout << "SUCCESS!!" << endl << endl;
 
@@ -245,10 +239,8 @@ int FileSystem::Dir_Read(string path, int size)
 	if (extHardDisk->init == true)
 	{
 	
-		while (found == false)
+		while (found == false && i < extHardDisk->totalInode)
 		{
-			if (size < extHardDisk->inode_bitmap[i].inode.file_sz)
-			{
 				if (extHardDisk->inode_bitmap[i].inode.direct_name == path)
 				{
 					temp = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
@@ -257,6 +249,7 @@ int FileSystem::Dir_Read(string path, int size)
 					{
 						wrkHardDisk->buffer.inodeblock = extHardDisk->inode_bitmap[i].inode; // stores into the buffer
 						wrkHardDisk->buffer.size = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
+						cout << "DIRECTORY READ SUCCESSFULLY" << endl << endl;
 						found = true;
 						return 0;
 					}
@@ -266,7 +259,7 @@ int FileSystem::Dir_Read(string path, int size)
 
 					return -1;
 				}
-			}
+			
 
 			i++;
 		}
