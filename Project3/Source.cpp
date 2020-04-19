@@ -137,9 +137,14 @@ int UserPage() {
 	cout << "8. WHD_File_Read()" << endl;
 	cout << "9. WHD_File_Close()" << endl;
 	cout << "10. WHD_File_Seek()" << endl;
-	cout << "11. Dir_Create()" << endl;
-	cout << "12. Dir_Read()" << endl;
-	cout << "13. Dir_Unlink()" << endl;
+	cout << "11. WHD_File_Unlink()" << endl;
+	cout << "12. Dir_Create()" << endl;
+	cout << "13. Dir_Read()" << endl;
+	cout << "14. Dir_Unlink()" << endl;
+	cout << "15. View File System Directory" << endl;
+	cout << "16. View External Hard Disk Content" << endl;
+	cout << "17. View RAM (Working Hard Disk) BUFFER Content" << endl;
+	cout << "18. View Open File Table" << endl;
 	cout << "0. Exit" << endl;
 	try {
 
@@ -148,7 +153,7 @@ int UserPage() {
 		if (cin.fail()) {
 			throw - 1;
 		}
-		if (input < 0 || input > 13) {
+		if (input < 0 || input > 18) {
 			input = -1;
 		}
 	}
@@ -319,13 +324,12 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 
 			UMDLibFS->wrkHardDisk->printOpenFileTable();
 			
-
 			fd = FileD();
 			DirectiveLog << "User Input: " << fd << endl;
 
 
 			response = UMDLibFS->wrkHardDisk->File_Close(fd);
-			UMDLibFS->wrkHardDisk->printOpenFileTable();
+			
 			if (response == 0) {
 				DirectiveLog << "Return: WHD_File_Close_Success" << endl;
 			}
@@ -360,6 +364,25 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		}
 		
 		else if (userInput == 11) {
+		DirectiveLog << "System: WHD_File_Unlink()" << endl;
+
+		cout << endl;
+		cout << "Make sure to type in the FULL PATHWAY name of the file to unlink....ie /root/a/b/c.txt" << endl << endl;
+
+		file = FileName("unlink");
+		
+		DirectiveLog << "User Input: " << file << endl;
+
+		response = UMDLibFS->wrkHardDisk->File_Unlink(file);
+
+		if (response == 0) {
+			DirectiveLog << "Return: WHD_File_Unlink_Return_Success" << endl;
+		}
+		if (response == -1) {
+			DirectiveLog << "Return: " << UMDLibFS->wrkHardDisk->osErrMsg << endl;
+		}
+		}
+		else if (userInput == 12) {
 		DirectiveLog << "System: Dir_Create()" << endl;
 		path = GetPath();
 		DirectiveLog << "User Input: " << path << endl;
@@ -376,7 +399,7 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 		}
 		}
 
-		else if (userInput == 12) {
+		else if (userInput == 13) {
 		DirectiveLog << "System: Dir_Read()" << endl;
 
 		path = GetPath();
@@ -393,7 +416,7 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 			}
 		}
 
-		else if (userInput == 13) {
+		else if (userInput == 14) {
 		DirectiveLog << "System: Dir_Unlink()" << endl;
 
 		path = GetPath();
@@ -407,7 +430,31 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 				DirectiveLog << "Return: " << UMDLibFS->osErrMsg << endl;
 			}
 		}
+		
+		else if (userInput == 15) {
+		DirectiveLog << "System: View File System Directory" << endl;
 
+		UMDLibFS->extHardDisk->printAllInode();
+
+		}
+		else if (userInput == 16) {
+		DirectiveLog << "System: View External Hard Disk Content" << endl;
+
+		UMDLibFS->extHardDisk->printHardDiskContent();
+
+		}
+		else if (userInput == 17) {
+		DirectiveLog << "System: View RAM Buffer Content" << endl;
+
+		UMDLibFS->wrkHardDisk->printBufferContent();
+
+		}
+		else if (userInput == 18) {
+		DirectiveLog << "System: View Open File Table" << endl;
+
+		UMDLibFS->wrkHardDisk->printOpenFileTable();
+
+		}
 		if (userInput == 0) {
 			DirectiveLog << "Return: EXIT_SYSTEM" << endl;
 			break;
@@ -417,6 +464,10 @@ EXTERNAL HARD DISK AND WORKING HARD DISK TOGETHER*/
 			DirectiveLog << "System: ERR_USER_INPUT" << endl;
 		}
 	}
+	UMDLibFS->extHardDisk->printAllInode();
+
+	
+
 	system("pause");
 	return 0;
 }

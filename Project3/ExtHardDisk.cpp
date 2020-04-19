@@ -80,6 +80,7 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 					diskSectors[inode_bitmap[cnt].address].inode = inode_bitmap[cnt].inode;
 					diskSectors[inode_bitmap[cnt].address].size = inode_bitmap[cnt].inode.file_sz;
 					found = true;
+					cout << "DIRECTORY CREATED SUCCESSFULLY " << endl << endl;
 					return 0;
 				}
 				cnt++;
@@ -106,7 +107,7 @@ int ExtHardDisk::Dir_Create(string path, string directory)
 
 				diskSectors[0].inode = rootDir;
 				diskSectors[0].size = rootDir.file_sz;
-
+				cout << "DIRECTORY CREATED SUCCESSFULLY " << endl << endl;
 				return 0;
 			}
 

@@ -2,42 +2,5 @@ System: Disk_Init()
 Return:  Disk_Init_Success
 System: FS_Boot()
 Return: FS_Boot_Success
-System: FS_Boot()
-Return: ERR_FILE_BOOT
-System: FS_Sync()
-Return: FS_Sync_Success
-System: Dir_Create()
-User Input: Electrical
-User Input: na
-Return: Dir_Read_Success
-System: Dir_Create()
-User Input: Mechanical
-User Input: na
-Return: Dir_Read_Success
-System: WHD_File_Create()
-User Input: Mechanical
-User Input: n
-Return: WHD_File_Create_Success
-System: WHD_File_Create()
-User Input: tool.txt
-User Input: /root/Mechanical
-Return: WHD_File_Create_Success
-System: WHD_File_Open()
-User Input: /root/Mechanical/toot.txt
-Return: 
-System: ERR_USER_INPUT
-System: WHD_File_Open()
-User Input: /root/Mechanical/tool.txt
-Return: WHD_File_Open_Success
-System: WHD_File_Read()
-User Input: 1
-Return: WHD_File_Return_Success
-System: Dir_Unlink()
-User Input: and
-Return: ERR_FILE_BOOT
-System: Dir_Unlink()
-User Input: /root/Mechanical
-Return: Dir_Unlink_Success
-System: WHD_File_Close()
-User Input: 1
-Return: WHD_File_Close_Success
+System: View External Hard Disk Content
+System: View File System Directory

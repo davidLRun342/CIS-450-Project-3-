@@ -244,25 +244,30 @@ int FileSystem::Dir_Read(string path, int size)
 	int temp = 0;
 	if (extHardDisk->init == true)
 	{
+	
 		while (found == false)
 		{
-			if (extHardDisk->inode_bitmap[i].inode.direct_name == path)
+			if (size < extHardDisk->inode_bitmap[i].inode.file_sz)
 			{
-				temp = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
-
-				if (temp < size)
+				if (extHardDisk->inode_bitmap[i].inode.direct_name == path)
 				{
-					wrkHardDisk->buffer.inodeblock = extHardDisk->inode_bitmap[i].inode; // stores into the buffer
-					wrkHardDisk->buffer.size = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
-					found = true;
-					return 0;
-				}
-				osErrMsg = "ERR_BUFF_TO_SMALL";
-				cout << "\n" << osErrMsg << endl << endl;
-				cout << "BUFFER CANNOT STORE THAT LOAD OF DATA!!" << endl;
+					temp = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
 
-				return -1;
+					if (temp < size)
+					{
+						wrkHardDisk->buffer.inodeblock = extHardDisk->inode_bitmap[i].inode; // stores into the buffer
+						wrkHardDisk->buffer.size = wrkHardDisk->buffer.size + extHardDisk->inode_bitmap[i].inode.file_sz;
+						found = true;
+						return 0;
+					}
+					osErrMsg = "ERR_BUFF_TO_SMALL";
+					cout << "\n" << osErrMsg << endl << endl;
+					cout << "BUFFER CANNOT STORE THAT LOAD OF DATA!!" << endl;
+
+					return -1;
+				}
 			}
+
 			i++;
 		}
 		osErrMsg = "ERR_DIR_READ";
@@ -300,6 +305,7 @@ int FileSystem::Dir_Unlink(string path)
 			osErrMsg = "ERR_DEL_ROOT_DIR";
 			cout << "\n" << osErrMsg << endl << endl;
 			cout << "ROOT DIRECTORY CAN NEVER BE DELETED!" << endl << endl;
+			return -1;
 		}
 		else if (path != "/root")
 		{

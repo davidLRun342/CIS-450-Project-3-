@@ -421,15 +421,21 @@ int WrkHardDisk::File_Unlink(string file)
 
 	}
 	
-	if (suc1 == true and suc2 == true)
+	if (suc1 == true && suc2 == true)
 	{
 		cout << "\nFILE UNLINK SUCCESSFUL" << endl << endl;
 		return 0;
+	}
+	else if(suc1 == false || suc2 == false)
+	{
+		cout << "\nFILE WAS NOT FOUND !!" << endl << endl;
+		return -1;
 	}
 
 		osErrMsg = " EXTERNAL HARD DISK MUST BE INITIALIZED TO  UNLINK FILE";
 		cout << "\n" << osErrMsg << endl << endl;
 		return -1;
+
 }
 
 void WrkHardDisk::diskAlloc()
